@@ -12,25 +12,15 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-const customerRoutes = require("./routes/customerRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-const segmentRoutes = require("./routes/segmentRoutes");
-const campaignRoutes = require("./routes/campaignRoutes");
-const authRoutes = require("./routes/authRoutes");
-const dashboardRoutes = require("./routes/dashboardRoutes");
-const aiRoutes = require("./routes/aiRoutes");
-
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/customers", require("./routes/customerRoutes"));
+app.use("/api/orders", require("./routes/orderRoutes"));
+app.use("/api/segments", require("./routes/segmentRoutes"));
+app.use("/api/campaigns", require("./routes/campaignRoutes"));
+app.use("/api/dashboard", require("./routes/dashboardRoutes"));
 app.use("/api/delivery", require("./routes/deliveryRoutes"));
-
 app.use("/api/vendor", require("./routes/vendorRoutes"));
-
-app.use("/api/ai", aiRoutes);
-app.use("/api/dashboard", dashboardRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/customers", customerRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/segments", segmentRoutes);
-app.use("/api/campaigns", campaignRoutes);
+app.use("/api/ai", require("./routes/aiRoutes"));
 
 // Vendor simulation endpoint
 app.post("/api/vendor/send", async (req, res) => {
@@ -48,6 +38,6 @@ app.get("/", (req, res) => {
 
 connectDB().then(() => {
   app.listen(PORT, () =>
-    console.log(`🚀 Server running on http://localhost:${PORT}`)
+    console.log(`🚀 Server running on port ${PORT}`)
   );
 });
