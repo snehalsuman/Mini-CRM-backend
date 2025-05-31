@@ -8,8 +8,6 @@ const authMiddleware = (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
-
-  // ✅ Check if token is a valid JWT format (3 dot-separated parts)
   if (!token || token.split(".").length !== 3) {
     return res.status(401).json({ message: "Malformed token" });
   }
@@ -17,7 +15,7 @@ const authMiddleware = (req, res, next) => {
   try {
     const decoded = jwtDecode(token);
     req.user = decoded;
-    console.log("✅ Decoded user:", decoded); // Optional: Debug
+    console.log("✅ Decoded user:", decoded);
     next();
   } catch (err) {
     console.error("❌ Token decode error:", err.message);

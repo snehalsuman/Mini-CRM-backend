@@ -1,8 +1,8 @@
 const Campaign = require("../models/Campaign");
 const Segment = require("../models/Segment");
 const Customer = require("../models/Customer");
-const CommunicationLog = require("../models/CommunicationLog"); // ✅ Add this
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args)); // ✅ For node-fetch in CommonJS
+const CommunicationLog = require("../models/CommunicationLog"); 
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args)); 
 
 const createCampaign = async (req, res) => {
   try {
@@ -12,7 +12,6 @@ const createCampaign = async (req, res) => {
     const segment = await Segment.findOne({ _id: segmentId, userId });
     if (!segment) return res.status(404).json({ error: "Segment not found" });
 
-    // Build query from rules
     const query = { userId };
     for (const rule of segment.rules) {
       if (rule.field && rule.operator && rule.value !== undefined) {
@@ -25,7 +24,6 @@ const createCampaign = async (req, res) => {
     const audience = await Customer.find(query);
     let sent = 0, failed = 0;
 
-    // First, create the campaign
     const campaign = await Campaign.create({
       userId,
       name,
@@ -35,14 +33,13 @@ const createCampaign = async (req, res) => {
       failed: 0,
     });
 
-    // Loop over customers
     for (const cust of audience) {
       try {
         const result = await fetch("http://localhost:8000/api/vendor/send", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            campaignId: campaign._id, // ✅ Use real ID
+            campaignId: campaign._id, 
             customerId: cust._id,
             message: `Hi ${cust.name}, ${message}`,
           }),
@@ -51,9 +48,8 @@ const createCampaign = async (req, res) => {
         const data = await result.json();
         const status = data.status === "SENT" ? "SENT" : "FAILED";
 
-        // ✅ Log delivery
         await CommunicationLog.create({
-        userId, // ✅ Required for dashboard filtering
+        userId,
         campaignId: campaign._id,
         customerId: cust._id,
         message: `Hi ${cust.name}, ${message}`,
@@ -73,7 +69,6 @@ const createCampaign = async (req, res) => {
       }
     }
 
-    // ✅ Update campaign counts
     campaign.sent = sent;
     campaign.failed = failed;
     await campaign.save();

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const logSchema = new mongoose.Schema({
-  userId: { type: String, required: true },  // ✅ Add this line
+  userId: { type: String, required: true }, 
   campaignId: { type: mongoose.Schema.Types.ObjectId, ref: "Campaign" },
   customerId: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
   message: String,

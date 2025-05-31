@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const campaignSchema = new mongoose.Schema({
-  userId: { type: String, required: true }, // 👈 Added
+  userId: { type: String, required: true }, 
   name: { type: String, required: true },
   segmentId: { type: mongoose.Schema.Types.ObjectId, ref: "Segment", required: true },
   message: { type: String, required: true },

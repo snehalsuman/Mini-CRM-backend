@@ -11,7 +11,6 @@ const PORT = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 
-// Routes
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/customers", require("./routes/customerRoutes"));
 app.use("/api/orders", require("./routes/orderRoutes"));
@@ -22,7 +21,7 @@ app.use("/api/delivery", require("./routes/deliveryRoutes"));
 app.use("/api/vendor", require("./routes/vendorRoutes"));
 app.use("/api/ai", require("./routes/aiRoutes"));
 
-// Vendor simulation endpoint
+
 app.post("/api/vendor/send", async (req, res) => {
   const { campaignId, customerId, message } = req.body;
   const isSuccess = Math.random() < 0.9;

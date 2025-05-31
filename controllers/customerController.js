@@ -5,7 +5,7 @@ const createCustomer = async (req, res) => {
     const { name, email, phone, totalSpend, visits, tags } = req.body;
 
     const customer = await Customer.create({
-      userId: req.user.sub, // ✅ Add this line
+      userId: req.user.sub, 
       name,
       email,
       phone,
@@ -23,7 +23,7 @@ const createCustomer = async (req, res) => {
 
 const getCustomers = async (req, res) => {
   try {
-    const customers = await Customer.find({ userId: req.user.sub }); // ✅ user-scoped
+    const customers = await Customer.find({ userId: req.user.sub }); 
     res.json(customers);
   } catch (err) {
     console.error("❌ Error fetching customers:", err);
