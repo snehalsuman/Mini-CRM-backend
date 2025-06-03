@@ -27,3 +27,4 @@ It handles:
 ```bash
 cd backend
 npm install
+npm run dev
